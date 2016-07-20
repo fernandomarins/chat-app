@@ -92,7 +92,7 @@ class MPCManager:  NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, 
     }
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
-        self.invitationHandler = invitationHandler
+        invitationHandler(true, session!)
         
         delegate?.invitationWasReceived(peerID.displayName)
     }
@@ -121,10 +121,10 @@ class MPCManager:  NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate, 
         let error: NSError?
         
         do {
-            try session.sendData(dataToSend, toPeers: peersArray as! [MCPeerID], withMode: MCSessionSendDataMode.Reliable)
+            try session!.sendData(dataToSend, toPeers: peersArray as! [MCPeerID], withMode: MCSessionSendDataMode.Reliable)
         } catch {
-            return false
             print(error)
+            return false
         }
         
         return true
